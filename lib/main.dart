@@ -1,6 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:logging/logging.dart';
+import 'dart:developer' as developer;
 
-void main() {
+final _log = Logger('Main');
+
+void main() async {
+  Logger.root.level = Level.ALL;
+
+  Logger.root.onRecord.listen((record) {
+    developer.log(
+      '${record.level.name}: ${record.loggerName}: ${record.time}: ${record.message}',
+      time: record.time,
+      name: record.loggerName,
+      error: record.error,
+      stackTrace: record.stackTrace,
+    );
+  });
+
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    _log.severe('Error loading .env file: ${e.toString()}');
+    throw Exception('Error loading .env file');
+  }
   runApp(const MyApp());
 }
 
