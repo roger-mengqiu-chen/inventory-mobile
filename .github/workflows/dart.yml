@@ -18,6 +18,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create .env file
+        run: |
+          cat .env.sample >> .env
+            
+
       # Install Flutter (community action)
       - uses: subosito/flutter-action@v2
         with:
