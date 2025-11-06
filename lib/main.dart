@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logging/logging.dart';
 import 'dart:developer' as developer;
+import 'package:inventory_mobile/ui/error/init_error.dart';
 
 final _log = Logger('Main');
 
@@ -21,7 +22,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    await dotenv.load(fileName: ".env");
+    await dotenv.load(fileName: '.env');
     final String appTitle = dotenv.env['APP_NAME'] ?? 'Flutter Demo';
     runApp(MainPage(appTitle: appTitle));
   } catch (e) {
@@ -88,43 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-
-class ErrorApp extends StatelessWidget {
-  final Object error;
-
-  const ErrorApp ({super.key, required this.error});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Builder(
-        builder: (context) {
-
-          return AlertDialog(
-            icon: const Icon(Icons.error, color: Colors.red),
-            title: const Text('Initialization Error'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget> [
-                  const Text(
-                    'The app failed to start. Please contact for support',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Details: ${error.runtimeType}',
-                    style: const TextStyle(color: Colors.redAccent),
-                  ),
-                  Text('Message: ${error.toString()}'),
-                ],
-              ),
-            ),
-          );
-        },
-      )
     );
   }
 }
